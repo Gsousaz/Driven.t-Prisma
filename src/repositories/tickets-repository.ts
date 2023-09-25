@@ -1,12 +1,12 @@
 import { prisma } from "@/config";
-import { TicketType } from "@/protocols";
+import { TicketResponse, TicketType } from "@/protocols";
 
 async function getTicketsTypes() {
     return await prisma.ticketType.findMany();
 }
 
+
 async function getTicketsByEnroll(enrollmentId: number) {
-    console.log('ETAPA FINAL: ENROLLMENT', enrollmentId);
     const ticket = await prisma.ticket.findUnique({
         include: {
             TicketType: true
@@ -15,18 +15,25 @@ async function getTicketsByEnroll(enrollmentId: number) {
             enrollmentId
         }
     });
-    console.log('ETAPA FINAL TICKET: ', ticket)
     return ticket;
 }
 
-async function createTicketFunction(ticket: TicketType) {
-    return prisma.ticket.create({
-        data: ticket
+
+
+async function createTicketFunction(enroll: number, ticketTypeId: number) {
+    return await prisma.ticket.create({
+        data: {
+            enrollmentId: enroll,
+            ticketTypeId,
+            status: 'RESERVED',
+        },
+        include: { TicketType: true },
     });
 }
 
+
+
 async function getTickets(ticketId: number) {
-    console.log('ETAPA FINAL: ENROLLMENT', ticketId);
     const ticket = await prisma.ticket.findUnique({
         where: {
             id: ticketId
@@ -35,7 +42,6 @@ async function getTickets(ticketId: number) {
             Enrollment: true
         }
     });
-    console.log('ETAETAPA FINAL: ENROLLMENT RETURN', ticket)
     return ticket;
 }
 

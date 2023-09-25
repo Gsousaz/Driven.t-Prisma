@@ -50,4 +50,7 @@ export type FullTicket = {
 
 
 
-export type TicketType = Omit<Ticket, "id">
+export type TicketType = Omit<Ticket, "id" | "createdAt" | "updatedAt">
+
+export type TicketResponse = Omit<Ticket, "updatedAt">
+0

@@ -2,6 +2,7 @@ import { Response } from 'express';
 import { AuthenticatedRequest } from '@/middlewares';
 import { ticketsService } from '@/services/tickets-service';
 import httpStatus from 'http-status';
+import { invalidDataError } from '@/errors';
 
 export async function getTicketTypes(req: AuthenticatedRequest, res: Response) {
     const ticketTypes = await ticketsService.getTicketTypes();
@@ -21,8 +22,16 @@ export async function getTickets(req: AuthenticatedRequest, res: Response) {
 export async function createTicketFunction(req: AuthenticatedRequest, res: Response) {
     const { userId } = req;
     const { ticketTypeId } = req.body;
+    if (!ticketTypeId) {
+        throw invalidDataError('ticketTypeId is required')
+    }
 
     const ticket = await ticketsService.createTicketFunction(userId, ticketTypeId);
-    console.log('ticket: ', ticket)
-    res.status(httpStatus.CREATED).send(ticket);
+    if (!ticket) {
+        console.log('aparentemente estamos quebrados')
+        throw invalidDataError('Error on submittion');
+    }
+
+    console.log('TICKET CONTROLLER: ', ticket)
+    res.status(httpStatus.CREATED).send({ ticket });
 }
