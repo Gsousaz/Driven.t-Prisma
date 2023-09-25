@@ -22,6 +22,7 @@ async function getTickets(userId: number) {
         console.log('Not found ticket ')
         throw notFoundError();
     }
+    return ticket;
 }
 
 

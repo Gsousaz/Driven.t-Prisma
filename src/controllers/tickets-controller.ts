@@ -15,7 +15,7 @@ export async function getTickets(req: AuthenticatedRequest, res: Response) {
     const { userId } = req;
     console.log('userId', userId);
     const ticket = await ticketsService.getTickets(userId);
-    return res.send(ticket);
+    res.send(ticket);
 }
 
 export async function createTicketFunction(req: AuthenticatedRequest, res: Response) {
@@ -24,5 +24,5 @@ export async function createTicketFunction(req: AuthenticatedRequest, res: Respo
 
     const ticket = await ticketsService.createTicketFunction(userId, ticketTypeId);
     console.log('ticket: ', ticket)
-    return res.status(httpStatus.CREATED).send(ticket);
+    res.status(httpStatus.CREATED).send(ticket);
 }

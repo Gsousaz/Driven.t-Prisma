@@ -27,7 +27,7 @@ async function createTicketFunction(ticket: TicketType) {
 
 async function getTickets(ticketId: number) {
     console.log('ETAPA FINAL: ENROLLMENT', ticketId);
-    const ticket = prisma.ticket.findFirst({
+    const ticket = await prisma.ticket.findUnique({
         where: {
             id: ticketId
         },
@@ -35,7 +35,7 @@ async function getTickets(ticketId: number) {
             Enrollment: true
         }
     });
-
+    console.log('ETAETAPA FINAL: ENROLLMENT RETURN', ticket)
     return ticket;
 }
 
