@@ -30,4 +30,15 @@ export type CEP = {
 };
 
 
-export type TicketType = Omit<Ticket, "id" | "createdAt" | "updatedAt">
+export type FulltTicketType = {
+  id: number,
+  name: string,
+  price: number,
+  isRemote: boolean,
+  includesHotel: boolean,
+  createdAt: Date,
+  updatedAt: Date,
+}
+
+
+export type TicketType = Omit<Ticket, "id">

@@ -11,13 +11,15 @@ async function getTicketTypes() {
 }
 
 async function getTickets(userId: number) {
+    console.log('userId service:', userId)
     const enroll = await enrollmentRepository.findWithAddressByUserId(userId);
     if (!enroll) {
+        console.log('NOT ENROLL on SERVICES')
         throw notFoundError();
     }
-
-    const ticket = await ticketsRepository.getTickets(enroll.id);
+    const ticket = await ticketsRepository.getTicketsByEnroll(enroll.id);
     if (!ticket) {
+        console.log('Not found ticket ')
         throw notFoundError();
     }
 }
@@ -33,6 +35,8 @@ async function createTicketFunction(userId: number, ticketTypeId: number) {
         ticketTypeId,
         enrollmentId: enroll.id,
         status: TicketStatus.RESERVED,
+        createdAt: new Date,
+        updatedAt: new Date
     }
 
     await ticketsRepository.createTicketFunction(ticket)
